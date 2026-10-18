@@ -37,8 +37,15 @@ public class AccountTools {
         return transactionRepository.findByAccountId(accountId);
     }
 
+    private void validateAmount(double amount) {
+        if (!Double.isFinite(amount) || amount <= 0) {
+            throw new IllegalArgumentException("Le montant doit être strictement positif et fini");
+        }
+    }
+
     @Tool(description = "Effectue un dépôt d'argent sur un compte bancaire et retourne la transaction créée")
     public Transaction deposit(Long accountId, double amount) {
+        validateAmount(amount);
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Compte introuvable avec l'id " + accountId));
         account.setBalance(account.getBalance() + amount);
@@ -55,6 +62,7 @@ public class AccountTools {
 
     @Tool(description = "Effectue un retrait d'argent sur un compte bancaire (échoue si le solde est insuffisant) et retourne la transaction créée")
     public Transaction withdraw(Long accountId, double amount) {
+        validateAmount(amount);
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Compte introuvable avec l'id " + accountId));
         if (account.getBalance() < amount) {
