@@ -1,4 +1,6 @@
-# Ebank — microservices, Angular et agent IA MCP
+# Projet d'évaluation — Ebank, microservices, Angular et agent IA MCP
+
+**Travail d'évaluation et adaptations techniques : Fatimaezzahra Zahnoune.**
 
 Ce dépôt est une **reproduction pédagogique de deux tutoriels YouTube** consacrés à une
 application bancaire en microservices, prolongée par un agent Spring AI utilisant le
@@ -10,12 +12,11 @@ un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la p
 
 ## Sources pédagogiques
 
-- Tutoriel YouTube 1 : architecture Spring Boot / Spring Cloud d'origine.
-- Tutoriel YouTube 2 : intégration Spring AI / MCP d'origine.
-- Dépôt initial : projet de départ utilisé pour cette reproduction.
+- [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q).
+- [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY).
+- [Code public ayant servi de point de départ](https://github.com/beks36/ebank-microservices-mcp).
 
-Les URL de ces trois références ne figurent pas dans la copie locale reçue. Elles doivent
-être ajoutées ici depuis l'énoncé ou le dépôt d'origine plutôt que reconstituées au hasard.
+Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
 
 ## Fonctionnalités réellement présentes
 
@@ -267,6 +268,13 @@ npm run build
 - le rejet HTTP 400 de `-1`, `0`, `NaN`, `Infinity` et `-Infinity` sur les deux routes ;
 - l'absence d'accès aux repositories lorsqu'un montant est invalide.
 
+## Adaptations et vérifications
+
+- Validation des montants non positifs ou non finis sur les routes REST et les outils MCP.
+- Ajout des tests `AccountControllerTest` et `AccountToolsTest`.
+- **À vérifier localement** : exécuter `mvn test` dans `ebank-service` ; aucun résultat de tests exécutés n'est affirmé ici.
+- Les autres services et l'interface Angular n'ont pas été validés en fonctionnement dans cette révision.
+
 ## Limites connues
 
 - les bases H2 sont volatiles : les données disparaissent à l'arrêt ;
@@ -274,8 +282,9 @@ npm run build
   transactions n'est implémentée ;
 - les erreurs « ressource absente » et « solde insuffisant » utilisent encore des
   exceptions génériques ;
-- les outils MCP `deposit` et `withdraw` ont leur propre implémentation et ne réutilisent
-  pas la validation HTTP de `AccountController` ;
+- les outils MCP `deposit` et `withdraw` ont leur propre implémentation ;
+  ils disposent maintenant d'une validation de montant indépendante, mais l'extraction
+  d'une couche métier commune et transactionnelle reste à réaliser ;
 - le dashboard ne propose que la consultation, sans formulaires CRUD ni opérations ;
 - `chatbot.html` est une page autonome à la racine et n'est pas intégrée au build Angular ;
 - aucun bot Telegram n'est présent dans ce dépôt ;
