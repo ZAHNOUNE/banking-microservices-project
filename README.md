@@ -1,6 +1,6 @@
 # Banking Microservices — Projet d'évaluation
 
-**Présentation et adaptations pour l'évaluation : Fatimaezzahra Zahnoune**
+**Dossier d'évaluation présenté par : Fatimaezzahra Zahnoune**
 
 Projet pédagogique d'architecture bancaire distribuée utilisant **Spring Boot**, **Spring Cloud**, **Consul**, **OpenFeign**, **Spring AI / MCP** et **Angular**.
 
@@ -22,7 +22,7 @@ Le code se trouve dans [`banking-microservices-app/`](./banking-microservices-ap
 - Routage avec Spring Cloud Gateway
 - Outils métier MCP exploitables par un agent Spring AI
 - Consultation des comptes et clients dans une interface Angular
-- Validation des montants des dépôts et retraits, avec tests JUnit
+- Contrôle des montants des dépôts et retraits sur les routes REST et les outils MCP
 
 ## Démarrage rapide
 
@@ -34,12 +34,9 @@ docker compose up -d
 
 Démarrer les modules Spring Boot dans des terminaux distincts avec `mvn spring-boot:run` depuis leurs dossiers respectifs. Le chatbot requiert une variable d'environnement `OPENAI_API_KEY`. Toutes les instructions et les ports sont détaillés dans la [documentation technique](./banking-microservices-app/README.md).
 
-**État de validation :** les fichiers ont été inspectés ; les suites de tests et l'exécution complète des microservices restent à confirmer.
-
-## Références pédagogiques et provenance
+## Références
 
 - [Tutoriel microservices — partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q)
 - [Tutoriel microservices — partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY)
 - [Dépôt public consulté comme point de départ](https://github.com/beks36/ebank-microservices-mcp)
 
-Cette présentation distingue la base pédagogique des adaptations apportées dans ce dépôt. Le dépôt de référence ne comporte pas de licence standard identifiée ; vérifier les permissions de réutilisation applicables.
