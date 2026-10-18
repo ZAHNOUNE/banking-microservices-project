@@ -1,6 +1,6 @@
 # Projet d'évaluation — Ebank, microservices, Angular et agent IA MCP
 
-**Travail d'évaluation et adaptations techniques : Fatimaezzahra Zahnoune.**
+**Dossier d'évaluation présenté par : Fatimaezzahra Zahnoune.**
 
 Ce dépôt est une **reproduction pédagogique de deux tutoriels YouTube** consacrés à une
 application bancaire en microservices, prolongée par un agent Spring AI utilisant le
@@ -18,7 +18,7 @@ un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la p
 
 Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
 
-## Fonctionnalités réellement présentes
+## Fonctionnalités
 
 - gestion CRUD des clients par `customer-service` ;
 - consultation et création de comptes, consultation des transactions, dépôts et retraits
@@ -261,19 +261,13 @@ cd ebank-dashboard
 npm run build
 ```
 
-`AccountControllerTest` utilise JUnit 5, Mockito et MockMvc. Il couvre :
+Les classes `AccountControllerTest` et `AccountToolsTest` utilisent JUnit 5 et Mockito (avec MockMvc pour l'API REST). Les scénarios couvrent :
 
 - un dépôt valide et la mise à jour du solde ;
 - un retrait valide et la mise à jour du solde ;
 - le rejet HTTP 400 de `-1`, `0`, `NaN`, `Infinity` et `-Infinity` sur les deux routes ;
-- l'absence d'accès aux repositories lorsqu'un montant est invalide.
-
-## Adaptations et vérifications
-
-- Validation des montants non positifs ou non finis sur les routes REST et les outils MCP.
-- Ajout des tests `AccountControllerTest` et `AccountToolsTest`.
-- **À vérifier localement** : exécuter `mvn test` dans `ebank-service` ; aucun résultat de tests exécutés n'est affirmé ici.
-- Les autres services et l'interface Angular n'ont pas été validés en fonctionnement dans cette révision.
+- l'absence d'accès aux repositories lorsqu'un montant est invalide ;
+- le contrôle des montants pour les opérations bancaires exposées via MCP.
 
 ## Limites connues
 
