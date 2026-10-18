@@ -1,0 +1,28 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: 1px solid #d8d2c2;
+  color: #8a8375;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tabs button:hover {
+  background: #f6f3ec;
+}
+
+.tabs button.active {
+  background: #2f5d4f;
+  border-color: #2f5d4f;
+  color: #fdfaf3;
+}
