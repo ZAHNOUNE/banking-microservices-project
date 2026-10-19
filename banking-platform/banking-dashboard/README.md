@@ -26,6 +26,6 @@ npm run build
 Le build a réussi dans GitHub Actions. Les tests UI Angular ne sont pas configurés dans `angular.json`.
 
 ## Périmètre
-Les pages sont en lecture seule. Le fichier `../chatbot.html` est une page autonome et n'est pas installé comme asset du build Angular ; le lien relatif figurant dans l'en-tête doit être adapté pour ouvrir effectivement cet assistant.
+Les pages sont en lecture seule. Le chatbot est publié dans `public/chatbot.html` et accessible depuis le lien « Ouvrir l'assistant IA » vers `/chatbot.html`. Il communique avec l'API conversationnelle sur le port 8083.
 
 Voir [l'architecture globale](../../docs/ARCHITECTURE.md).
