@@ -53,14 +53,14 @@ class CustomerControllerTest {
 
     @Test void blankNameIs400() throws Exception {
         mvc.perform(post("/customers").contentType("application/json")
-                .content("{\\"name\\":\\" \\",\\"email\\":\\"valid@example.com\\"}"))
+                .content("{\"name\":\" \",\"email\":\"valid@example.com\"}"))
                 .andExpect(status().isBadRequest());
         verify(repository, never()).save(any());
     }
 
     @Test void invalidEmailIs400() throws Exception {
         mvc.perform(post("/customers").contentType("application/json")
-                .content("{\\"name\\":\\"Client\\",\\"email\\":\\"not-an-email\\"}"))
+                .content("{\"name\":\"Client\",\"email\":\"not-an-email\"}"))
                 .andExpect(status().isBadRequest());
         verify(repository, never()).save(any());
     }
