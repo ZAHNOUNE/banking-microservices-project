@@ -41,7 +41,7 @@ public class AccountController {
     @GetMapping("/{id}/details")
     public AccountWithCustomerDTO getAccountWithCustomer(@PathVariable Long id) {
         Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found with id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compte introuvable"));
         CustomerDTO customer = customerRestClient.getCustomerById(account.getCustomerId());
         return AccountWithCustomerDTO.builder()
                 .id(account.getId())
