@@ -1,10 +1,10 @@
 package ma.ebank.ebank.tools;
 
-import ma.ebank.ebank.entities.Account;
 import ma.ebank.ebank.entities.Transaction;
 import ma.ebank.ebank.entities.TransactionType;
 import ma.ebank.ebank.repositories.AccountRepository;
 import ma.ebank.ebank.repositories.TransactionRepository;
+import ma.ebank.ebank.services.BankingTransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,75 +12,63 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountToolsTest {
     @Mock private AccountRepository accountRepository;
     @Mock private TransactionRepository transactionRepository;
+    @Mock private BankingTransactionService bankingTransactionService;
     private AccountTools tools;
 
     @BeforeEach
     void setUp() {
-        tools = new AccountTools(accountRepository, transactionRepository);
+        tools = new AccountTools(accountRepository, transactionRepository, bankingTransactionService);
     }
 
     @ParameterizedTest
     @ValueSource(doubles = {-100.0, -1.0, 0.0, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY})
     void depositRejectsInvalidAmounts(double amount) {
-        assertThrows(IllegalArgumentException.class, () -> tools.deposit(1L, amount));
+        when(bankingTransactionService.deposit(1L, amount))
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Montant invalide"));
+        assertThrows(ResponseStatusException.class, () -> tools.deposit(1L, amount));
         verifyNoInteractions(accountRepository, transactionRepository);
     }
 
     @ParameterizedTest
     @ValueSource(doubles = {-100.0, -1.0, 0.0, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY})
     void withdrawRejectsInvalidAmounts(double amount) {
-        assertThrows(IllegalArgumentException.class, () -> tools.withdraw(1L, amount));
+        when(bankingTransactionService.withdraw(1L, amount))
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Montant invalide"));
+        assertThrows(ResponseStatusException.class, () -> tools.withdraw(1L, amount));
         verifyNoInteractions(accountRepository, transactionRepository);
     }
 
     @Test
-    void depositUpdatesBalanceForPositiveAmount() {
-        Account account = Account.builder().id(1L).balance(100.0).build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(transactionRepository.save(any(Transaction.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
-
-        Transaction transaction = tools.deposit(1L, 25.0);
-        assertEquals(125.0, account.getBalance());
-        assertEquals(25.0, transaction.getAmount());
-        assertEquals(TransactionType.DEPOT, transaction.getType());
-        verify(accountRepository).save(account);
+    void depositDelegatesToBusinessService() {
+        Transaction transaction = Transaction.builder().amount(25.0).type(TransactionType.DEPOT).build();
+        when(bankingTransactionService.deposit(1L, 25.0)).thenReturn(transaction);
+        assertSame(transaction, tools.deposit(1L, 25.0));
+        verify(bankingTransactionService).deposit(1L, 25.0);
     }
 
     @Test
-    void withdrawUpdatesBalanceForPositiveAmount() {
-        Account account = Account.builder().id(1L).balance(100.0).build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(transactionRepository.save(any(Transaction.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
-
-        Transaction transaction = tools.withdraw(1L, 25.0);
-        assertEquals(75.0, account.getBalance());
-        assertEquals(25.0, transaction.getAmount());
-        assertEquals(TransactionType.RETRAIT, transaction.getType());
-        verify(accountRepository).save(account);
+    void withdrawDelegatesToBusinessService() {
+        Transaction transaction = Transaction.builder().amount(25.0).type(TransactionType.RETRAIT).build();
+        when(bankingTransactionService.withdraw(1L, 25.0)).thenReturn(transaction);
+        assertSame(transaction, tools.withdraw(1L, 25.0));
+        verify(bankingTransactionService).withdraw(1L, 25.0);
     }
 
     @Test
     void withdrawRejectsInsufficientBalance() {
-        Account account = Account.builder().id(1L).balance(10.0).build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        assertThrows(RuntimeException.class, () -> tools.withdraw(1L, 25.0));
-        assertEquals(10.0, account.getBalance());
-        verifyNoInteractions(transactionRepository);
+        when(bankingTransactionService.withdraw(1L, 25.0))
+                .thenThrow(new ResponseStatusException(HttpStatus.CONFLICT, "Solde insuffisant"));
+        assertThrows(ResponseStatusException.class, () -> tools.withdraw(1L, 25.0));
+        verifyNoInteractions(accountRepository, transactionRepository);
     }
 }
