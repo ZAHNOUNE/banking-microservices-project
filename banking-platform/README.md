@@ -14,9 +14,10 @@ un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la p
 
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q).
 - [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY).
-- [Code public ayant servi de point de départ](https://github.com/beks36/ebank-microservices-mcp).
 
-Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
+## Provenance du code
+
+Une archive de code préexistant a été utilisée au cours de la préparation du projet ; les références pédagogiques présentées ci-dessus concernent uniquement les deux vidéos. Avant une redistribution, les droits applicables aux éléments réutilisés doivent être vérifiés.
 
 ## Guide de lecture et documentation par module
 
