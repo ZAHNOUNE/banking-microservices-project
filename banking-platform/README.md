@@ -86,6 +86,10 @@ La plateforme est organisée autour de `customer-service`, `account-service`, `a
 - Angular 22, TypeScript 6 et npm ;
 - Docker Compose pour Consul.
 
+## Validations des API
+
+Les informations clients requièrent un nom non vide et un email valide. Les ressources clients ou comptes introuvables retournent HTTP 404 ; les requêtes chatbot sans message retournent HTTP 400. Les montants de dépôt/retrait sont contrôlés par le service transactionnel partagé.
+
 ## API REST
 
 Via la Gateway, préfixer les routes métier par `http://localhost:8888/api`.
