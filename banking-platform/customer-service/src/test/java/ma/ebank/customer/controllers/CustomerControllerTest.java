@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.Optional;
 
@@ -23,7 +24,10 @@ class CustomerControllerTest {
     MockMvc mvc;
 
     @BeforeEach void setup() {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.afterPropertiesSet();
         mvc = MockMvcBuilders.standaloneSetup(new CustomerController(repository))
+                .setValidator(validator)
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .build();
     }
@@ -45,6 +49,20 @@ class CustomerControllerTest {
         when(repository.existsById(42L)).thenReturn(false);
         mvc.perform(delete("/customers/42")).andExpect(status().isNotFound());
         verify(repository, never()).deleteById(anyLong());
+    }
+
+    @Test void blankNameIs400() throws Exception {
+        mvc.perform(post("/customers").contentType("application/json")
+                .content("{\\"name\\":\\" \\",\\"email\\":\\"valid@example.com\\"}"))
+                .andExpect(status().isBadRequest());
+        verify(repository, never()).save(any());
+    }
+
+    @Test void invalidEmailIs400() throws Exception {
+        mvc.perform(post("/customers").contentType("application/json")
+                .content("{\\"name\\":\\"Client\\",\\"email\\":\\"not-an-email\\"}"))
+                .andExpect(status().isBadRequest());
+        verify(repository, never()).save(any());
     }
 
     @Test void validCustomerCanBeCreated() throws Exception {
