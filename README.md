@@ -163,4 +163,7 @@ Application à vocation pédagogique, et non bancaire de production : authentifi
 ## Références pédagogiques
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q)
 - [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY)
-- [Référence de code et conditions de réutilisation](https://github.com/beks36/ebank-microservices-mcp) — attribution de la source consultée ; sa licence n'a pas été identifiée dans le dépôt.
+
+## Provenance du code
+
+Une archive de code préexistant a été utilisée au cours de la préparation de ce dépôt. Les références pédagogiques ci-dessus restent limitées aux deux vidéos. Les adaptations et les tests sont décrits dans la documentation technique.
