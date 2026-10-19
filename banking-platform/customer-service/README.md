@@ -31,6 +31,10 @@ La Gateway permet l'accès via `http://localhost:8888/api/customers`.
 ## Lancer
 Démarrer Consul depuis `banking-platform/` avec `docker compose up -d`, puis dans ce dossier : `mvn spring-boot:run`.
 
+## Tests
+
+`CustomerControllerTest` comporte 6 tests couvrant la création valide, les validations des champs obligatoires et les réponses HTTP 404 pour les ressources absentes. Vérification : `mvn test`.
+
 ## Limites
 Le stockage H2 est volatil ; aucune authentification/autorisation n'est intégrée. Les ressources absentes génèrent actuellement des exceptions génériques.
 
