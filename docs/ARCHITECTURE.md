@@ -55,6 +55,25 @@ flowchart TB
 - **Spring AI** : le client MCP fournit ces outils à un `ChatClient` OpenAI.
 - **Angular** : consultation des listes de comptes et de clients via la Gateway.
 
+
+## Cas d'utilisation
+
+Les acteurs principaux sont l'utilisateur du dashboard, le client API et l'utilisateur de l'assistant conversationnel. Les cas ci-dessous représentent uniquement les opérations présentes dans le code.
+
+```mermaid
+flowchart LR
+    U["Utilisateur dashboard"] --> A["Consulter les comptes"]
+    U --> B["Consulter les clients"]
+    API["Client API REST"] --> C["Créer et gérer les clients"]
+    API --> D["Créer un compte"]
+    API --> E["Effectuer un dépôt ou retrait"]
+    API --> F["Consulter les transactions"]
+    API --> G["Consulter compte et client associés"]
+    CHAT["Utilisateur assistant"] --> H["Poser une question en langage naturel"]
+    H --> I["Interroger outils MCP clients"]
+    H --> J["Interroger outils MCP bancaires"]
+```
+
 ## 2. Modèle métier — diagramme de classes
 
 Les deux bases H2 sont indépendantes : `Account.customerId` est un identifiant métier, pas une clé étrangère JPA vers la base des clients.

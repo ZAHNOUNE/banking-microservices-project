@@ -1,59 +1,31 @@
-# EbankDashboard
+# Banking Dashboard — Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Interface Angular et TypeScript permettant de consulter les comptes et les clients à travers la Gateway.
 
-## Development server
+## Organisation
+- `src/app/app.ts` : composant racine, onglets et signaux d'état.
+- `src/app/app.html` : tableaux Comptes et Clients, messages d'erreur.
+- `src/app/account.service.ts` : `GET http://localhost:8888/api/accounts`.
+- `src/app/customer.service.ts` : `GET http://localhost:8888/api/customers`.
+- `src/app/app.config.ts` : configuration du client HTTP Angular.
+- `src/app/app.css`, `src/styles.css` : styles de l'application.
 
-To start a local development server, run:
+Les comptes affichent l'identifiant, le RIB, le solde et l'identifiant du client. Les clients affichent l'identifiant, le nom, l'adresse électronique et le téléphone.
 
+## Installation et exécution
 ```bash
-ng serve
+npm ci
+npm start
 ```
+Accès local : `http://localhost:4200`, avec Gateway et les services métier actifs.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+## Compilation
 ```bash
-ng generate component component-name
+npm run build
 ```
+Le build a réussi dans GitHub Actions. Les tests UI Angular ne sont pas configurés dans `angular.json`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Périmètre
+Les pages sont en lecture seule. Le fichier `../chatbot.html` est une page autonome et n'est pas installé comme asset du build Angular ; le lien relatif figurant dans l'en-tête doit être adapté pour ouvrir effectivement cet assistant.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Voir [l'architecture globale](../../docs/ARCHITECTURE.md).

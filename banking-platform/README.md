@@ -18,6 +18,17 @@ un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la p
 
 Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
 
+## Guide de lecture et documentation par module
+
+- [Présentation générale](../README.md)
+- [Guide de maintenance et conventions](../CLAUDE.md)
+- [Architecture globale, cas d'utilisation, classes et séquences](../docs/ARCHITECTURE.md)
+- [Service clients](customer-service/README.md)
+- [Service comptes et transactions](account-service/README.md)
+- [Passerelle API](api-gateway/README.md)
+- [Assistant conversationnel](ai-assistant-service/README.md)
+- [Dashboard Angular](banking-dashboard/README.md)
+
 ## Fonctionnalités
 
 - gestion CRUD des clients par `customer-service` ;
@@ -57,9 +68,7 @@ flowchart LR
 
 ### Organisation du dépôt
 
-Les dossiers ont des noms orientés métier : `account-service`, `api-gateway`, `ai-assistant-service` et `banking-dashboard`. Les identifiants internes Spring et Consul restent inchangés afin de préserver la communication entre services.
-
-Les noms des dossiers ci-dessous sont descriptifs ; les identifiants Spring internes sont conservés pour la découverte Consul et le routage.
+La plateforme est organisée autour de `customer-service`, `account-service`, `api-gateway`, `ai-assistant-service` et `banking-dashboard`. Les identifiants Spring et Consul sont définis dans les configurations YAML de chaque service.
 
 ### Modules et ports
 
@@ -245,6 +254,9 @@ Ouvrir http://localhost:4200. Le dashboard appelle la Gateway sur le port 8888 e
 les listes de comptes et de clients.
 
 ## Tests et vérifications
+
+Le workflow GitHub Actions utilise `mvn test` pour chacun des quatre modules Java et `npm run build` pour le frontend. Le rapport de l'exécution vérifiée le 19 octobre 2026 indique **27 tests JUnit réussis** dans le service bancaire (12 pour le contrôleur REST et 15 pour les outils MCP), sans échec ni erreur ; les autres jobs Maven et le build Angular ont également réussi.
+
 
 Tests du contrôleur des comptes :
 
