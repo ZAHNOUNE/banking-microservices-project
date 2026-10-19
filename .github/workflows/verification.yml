@@ -20,12 +20,12 @@ jobs:
       matrix:
         module:
           - customer-service
-          - ebank-service
-          - gateway-service
-          - ebank-chatbot-service
+          - account-service
+          - api-gateway
+          - ai-assistant-service
     defaults:
       run:
-        working-directory: banking-microservices-app/${{ matrix.module }}
+        working-directory: banking-platform/${{ matrix.module }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-          cache-dependency-path: banking-microservices-app/**/pom.xml
+          cache-dependency-path: banking-platform/**/pom.xml
       - name: Run Maven tests
         run: mvn -B -ntp test
 
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: banking-microservices-app/ebank-dashboard
+        working-directory: banking-platform/banking-dashboard
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-          cache-dependency-path: banking-microservices-app/ebank-dashboard/package-lock.json
+          cache-dependency-path: banking-platform/banking-dashboard/package-lock.json
       - name: Install dependencies
         run: npm ci
       - name: Build dashboard
