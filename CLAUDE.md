@@ -56,7 +56,7 @@ Dans des terminaux distincts :
 ## Risques connus
 - Absence de mécanisme d'authentification et d'autorisation pour REST et MCP.
 - Solde monétaire en `double`, stockage H2 volatil et pas de garantie d'atomicité de l'écriture solde + transaction.
-- Logique de dépôt/retrait dupliquée entre contrôleur REST et outils MCP.
+- Dépôts et retraits centralisés dans `BankingTransactionService`, annoté `@Transactional` ; absence de contrôle explicite des écritures concurrentes.
 - Gestion d'erreur hétérogène (exceptions génériques).
 - Gateway avec CORS permissif ; ports en dur pour l'environnement local.
 - Chatbot HTML autonome, non livré dans le build Angular.
