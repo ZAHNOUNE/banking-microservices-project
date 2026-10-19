@@ -14,10 +14,6 @@ un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la p
 
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q).
 - [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY).
-- [Code public ayant servi de point de départ](https://github.com/beks36/ebank-microservices-mcp).
-
-Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
-
 ## Guide de lecture et documentation par module
 
 - [Présentation générale](../README.md)
@@ -298,6 +294,6 @@ Les classes `AccountControllerTest` et `AccountToolsTest` utilisent JUnit 5 et M
   ils disposent maintenant d'une validation de montant indépendante, mais l'extraction
   d'une couche métier commune et transactionnelle reste à réaliser ;
 - le dashboard ne propose que la consultation, sans formulaires CRUD ni opérations ;
-- `chatbot.html` est une page autonome à la racine et n'est pas intégrée au build Angular ;
+- `chatbot.html` est disponible comme ressource statique Angular dans `banking-dashboard/public/` ;
 - aucun bot Telegram n'est présent dans ce dépôt ;
 - aucune cible de tests Angular n'est configurée dans `angular.json`.
