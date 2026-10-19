@@ -255,7 +255,7 @@ les listes de comptes et de clients.
 
 ## Tests et vérifications
 
-Le workflow GitHub Actions utilise `mvn test` pour chacun des quatre modules Java et `npm run build` pour le frontend. Le rapport de l'exécution vérifiée le 19 octobre 2026 indique **53 tests JUnit réussis** dans le service bancaire (44 dans `account-service`, 6 dans `customer-service` et 3 dans `ai-assistant-service`), sans échec ni erreur ; les autres jobs Maven et le build Angular ont également réussi.
+Le workflow GitHub Actions utilise `mvn test` pour chacun des quatre modules Java et `npm run build` pour le frontend. Le rapport de l'exécution vérifiée le 19 octobre 2026 indique **53 tests JUnit réussis** dans les services Java (44 dans `account-service`, 6 dans `customer-service` et 3 dans `ai-assistant-service`), sans échec ni erreur ; les autres jobs Maven et le build Angular ont également réussi.
 
 
 Tests du contrôleur des comptes :
