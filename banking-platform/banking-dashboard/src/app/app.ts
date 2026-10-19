@@ -15,6 +15,7 @@ export class App implements OnInit {
   protected readonly customers = signal<Customer[]>([]);
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
+  protected readonly customerError = signal<string | null>(null);
   protected readonly activeTab = signal<'accounts' | 'customers'>('accounts');
 
   constructor(
@@ -36,7 +37,7 @@ export class App implements OnInit {
 
     this.customerService.getCustomers().subscribe({
       next: (data) => this.customers.set(data),
-      error: () => {}
+      error: () => this.customerError.set('Impossible de charger les clients. Vérifiez la connexion à la Gateway.')
     });
   }
 

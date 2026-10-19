@@ -50,6 +50,9 @@
     }
 
     @if (activeTab() === 'customers') {
+      @if (customerError()) {
+        <p class="status error">{{ customerError() }}</p>
+      }
       <table>
         <thead>
           <tr>

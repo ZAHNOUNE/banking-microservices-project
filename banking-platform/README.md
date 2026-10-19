@@ -1,4 +1,6 @@
-# Ebank — microservices, Angular et agent IA MCP
+# Projet d'évaluation — Ebank, microservices, Angular et agent IA MCP
+
+**Dossier d'évaluation présenté par : Fatimaezzahra Zahnoune.**
 
 Ce dépôt est une **reproduction pédagogique de deux tutoriels YouTube** consacrés à une
 application bancaire en microservices, prolongée par un agent Spring AI utilisant le
@@ -8,20 +10,19 @@ Le code est destiné à l'apprentissage : il montre la découverte de services, 
 un appel interservice avec OpenFeign, l'exposition d'outils MCP et leur utilisation par
 un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la production.
 
-## Sources pédagogiques
+## Références pédagogiques
 
-- Tutoriel YouTube 1 : architecture Spring Boot / Spring Cloud d'origine.
-- Tutoriel YouTube 2 : intégration Spring AI / MCP d'origine.
-- Dépôt initial : projet de départ utilisé pour cette reproduction.
+- [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q).
+- [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY).
+- [Code public ayant servi de point de départ](https://github.com/beks36/ebank-microservices-mcp).
 
-Les URL de ces trois références ne figurent pas dans la copie locale reçue. Elles doivent
-être ajoutées ici depuis l'énoncé ou le dépôt d'origine plutôt que reconstituées au hasard.
+Le dépôt initial ne présente pas de fichier de licence standard identifié. Vérifier les autorisations de réutilisation applicables avant toute redistribution.
 
-## Fonctionnalités réellement présentes
+## Fonctionnalités
 
 - gestion CRUD des clients par `customer-service` ;
 - consultation et création de comptes, consultation des transactions, dépôts et retraits
-  par `ebank-service` ;
+  par `account-service` ;
 - agrégation d'un compte avec son client par OpenFeign ;
 - découverte et enregistrement des services avec Consul ;
 - point d'entrée unique avec Spring Cloud Gateway ;
@@ -40,7 +41,7 @@ flowchart LR
     UI[Dashboard Angular<br/>localhost:4200] --> GW[Gateway<br/>localhost:8888]
     HTML[chatbot.html] --> CHAT[Chatbot Spring AI<br/>localhost:8083]
     GW --> CUSTOMER[customer-service<br/>localhost:8081]
-    GW --> BANK[ebank-service<br/>localhost:8082]
+    GW --> BANK[account-service<br/>localhost:8082]
     GW --> CHAT
     BANK -->|OpenFeign + nom logique| CUSTOMER
     CHAT -->|MCP Streamable HTTP| CUSTOMER
@@ -54,16 +55,22 @@ flowchart LR
     CONSUL --- GW
 ```
 
+### Organisation du dépôt
+
+Les dossiers ont des noms orientés métier : `account-service`, `api-gateway`, `ai-assistant-service` et `banking-dashboard`. Les identifiants internes Spring et Consul restent inchangés afin de préserver la communication entre services.
+
+Les noms des dossiers ci-dessous sont descriptifs ; les identifiants Spring internes sont conservés pour la découverte Consul et le routage.
+
 ### Modules et ports
 
 | Composant | Port | Rôle |
 | --- | ---: | --- |
 | Consul | 8500 | registre de services et contrôles de santé |
 | `customer-service` | 8081 | clients, base H2, serveur MCP `/mcp` |
-| `ebank-service` | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
-| `ebank-chatbot-service` | 8083 | client MCP, `ChatClient` et OpenAI |
-| `gateway-service` | 8888 | routage `/api/**` vers les services |
-| `ebank-dashboard` | 4200 | interface Angular de consultation |
+| `account-service` (service Spring `ebank-service`) | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
+| `ai-assistant-service` (service Spring `ebank-chatbot-service`) | 8083 | client MCP, `ChatClient` et OpenAI |
+| `api-gateway` (service Spring `gateway-service`) | 8888 | routage `/api/**` vers les services |
+| `banking-dashboard` (projet Angular `ebank-dashboard`) | 4200 | interface Angular de consultation |
 
 ### Technologies
 
@@ -109,7 +116,7 @@ Via la Gateway, préfixer les routes métier par `http://localhost:8888/api`.
 - `getCustomerById` ;
 - `getAllCustomers`.
 
-`ebank-service` expose :
+`account-service` expose :
 
 - `getAccountById` ;
 - `getAccountsByCustomerId` ;
@@ -173,7 +180,7 @@ mvn spring-boot:run
 ```
 
 ```bash
-cd ebank-service
+cd account-service
 mvn spring-boot:run
 ```
 
@@ -187,7 +194,7 @@ Vérifications :
 ### 3. Gateway
 
 ```bash
-cd gateway-service
+cd api-gateway
 mvn spring-boot:run
 ```
 
@@ -202,7 +209,7 @@ Vérifications :
 Après avoir défini `OPENAI_API_KEY` :
 
 ```bash
-cd ebank-chatbot-service
+cd ai-assistant-service
 mvn spring-boot:run
 ```
 
@@ -229,7 +236,7 @@ HTTP statique. Elle cible par défaut `http://localhost:8083/chat/ask`.
 ### 5. Dashboard Angular
 
 ```bash
-cd ebank-dashboard
+cd banking-dashboard
 npm install
 npm start
 ```
@@ -242,30 +249,31 @@ les listes de comptes et de clients.
 Tests du contrôleur des comptes :
 
 ```bash
-cd ebank-service
+cd account-service
 mvn -Dtest=AccountControllerTest test
 ```
 
 Suite complète du service :
 
 ```bash
-cd ebank-service
+cd account-service
 mvn test
 ```
 
 Compilation du dashboard :
 
 ```bash
-cd ebank-dashboard
+cd banking-dashboard
 npm run build
 ```
 
-`AccountControllerTest` utilise JUnit 5, Mockito et MockMvc. Il couvre :
+Les classes `AccountControllerTest` et `AccountToolsTest` utilisent JUnit 5 et Mockito (avec MockMvc pour l'API REST). Les scénarios couvrent :
 
 - un dépôt valide et la mise à jour du solde ;
 - un retrait valide et la mise à jour du solde ;
 - le rejet HTTP 400 de `-1`, `0`, `NaN`, `Infinity` et `-Infinity` sur les deux routes ;
-- l'absence d'accès aux repositories lorsqu'un montant est invalide.
+- l'absence d'accès aux repositories lorsqu'un montant est invalide ;
+- le contrôle des montants pour les opérations bancaires exposées via MCP.
 
 ## Limites connues
 
@@ -274,8 +282,9 @@ npm run build
   transactions n'est implémentée ;
 - les erreurs « ressource absente » et « solde insuffisant » utilisent encore des
   exceptions génériques ;
-- les outils MCP `deposit` et `withdraw` ont leur propre implémentation et ne réutilisent
-  pas la validation HTTP de `AccountController` ;
+- les outils MCP `deposit` et `withdraw` ont leur propre implémentation ;
+  ils disposent maintenant d'une validation de montant indépendante, mais l'extraction
+  d'une couche métier commune et transactionnelle reste à réaliser ;
 - le dashboard ne propose que la consultation, sans formulaires CRUD ni opérations ;
 - `chatbot.html` est une page autonome à la racine et n'est pas intégrée au build Angular ;
 - aucun bot Telegram n'est présent dans ce dépôt ;
