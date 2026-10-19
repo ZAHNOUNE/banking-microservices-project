@@ -1,0 +1,23 @@
+# Secrets and local environments
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Build artifacts
+**/target/
+**/build/
+**/node_modules/
+**/dist/
+**/.angular/
+**/.idea/
+**/.vscode/
+*.log
+.DS_Store
+Thumbs.db
