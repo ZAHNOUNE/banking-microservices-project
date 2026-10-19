@@ -55,6 +55,10 @@ flowchart LR
     CONSUL --- GW
 ```
 
+### Organisation du dépôt
+
+Les dossiers ont des noms orientés métier : `account-service`, `api-gateway`, `ai-assistant-service` et `banking-dashboard`. Les identifiants internes Spring et Consul restent inchangés afin de préserver la communication entre services.
+
 ### Modules et ports
 
 | Composant | Port | Rôle |
