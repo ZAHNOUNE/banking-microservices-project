@@ -29,6 +29,10 @@ Dans ce dossier : `mvn spring-boot:run`.
 Invoke-RestMethod -Method Post -Uri "http://localhost:8083/chat/ask" -ContentType "application/json" -Body '{"message":"Quel est le solde du compte 1 ?"}'
 ```
 
+## Tests
+
+`ChatControllerTest` comporte 3 tests vérifiant qu'une requête nulle, un message absent ou un message vide est rejeté avec HTTP 400 avant tout appel au modèle. Vérification : `mvn test`.
+
 ## Limites
 Les outils MCP peuvent modifier des soldes sans authentification métier. Aucune intégration Telegram n'est implémentée dans ce dépôt. L'interface HTML autonome du chatbot est dans `banking-platform/chatbot.html`.
 
