@@ -10,7 +10,7 @@ Le code est destiné à l'apprentissage : il montre la découverte de services, 
 un appel interservice avec OpenFeign, l'exposition d'outils MCP et leur utilisation par
 un modèle OpenAI. Il ne constitue pas une application bancaire prête pour la production.
 
-## Sources pédagogiques
+## Références pédagogiques
 
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q).
 - [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY).
@@ -22,7 +22,7 @@ Le dépôt initial ne présente pas de fichier de licence standard identifié. V
 
 - gestion CRUD des clients par `customer-service` ;
 - consultation et création de comptes, consultation des transactions, dépôts et retraits
-  par `ebank-service` ;
+  par `account-service` ;
 - agrégation d'un compte avec son client par OpenFeign ;
 - découverte et enregistrement des services avec Consul ;
 - point d'entrée unique avec Spring Cloud Gateway ;
@@ -41,7 +41,7 @@ flowchart LR
     UI[Dashboard Angular<br/>localhost:4200] --> GW[Gateway<br/>localhost:8888]
     HTML[chatbot.html] --> CHAT[Chatbot Spring AI<br/>localhost:8083]
     GW --> CUSTOMER[customer-service<br/>localhost:8081]
-    GW --> BANK[ebank-service<br/>localhost:8082]
+    GW --> BANK[account-service<br/>localhost:8082]
     GW --> CHAT
     BANK -->|OpenFeign + nom logique| CUSTOMER
     CHAT -->|MCP Streamable HTTP| CUSTOMER
@@ -61,10 +61,10 @@ flowchart LR
 | --- | ---: | --- |
 | Consul | 8500 | registre de services et contrôles de santé |
 | `customer-service` | 8081 | clients, base H2, serveur MCP `/mcp` |
-| `ebank-service` | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
-| `ebank-chatbot-service` | 8083 | client MCP, `ChatClient` et OpenAI |
-| `gateway-service` | 8888 | routage `/api/**` vers les services |
-| `ebank-dashboard` | 4200 | interface Angular de consultation |
+| `account-service` | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
+| `ai-assistant-service` | 8083 | client MCP, `ChatClient` et OpenAI |
+| `api-gateway` | 8888 | routage `/api/**` vers les services |
+| `banking-dashboard` | 4200 | interface Angular de consultation |
 
 ### Technologies
 
@@ -110,7 +110,7 @@ Via la Gateway, préfixer les routes métier par `http://localhost:8888/api`.
 - `getCustomerById` ;
 - `getAllCustomers`.
 
-`ebank-service` expose :
+`account-service` expose :
 
 - `getAccountById` ;
 - `getAccountsByCustomerId` ;
@@ -174,7 +174,7 @@ mvn spring-boot:run
 ```
 
 ```bash
-cd ebank-service
+cd account-service
 mvn spring-boot:run
 ```
 
@@ -188,7 +188,7 @@ Vérifications :
 ### 3. Gateway
 
 ```bash
-cd gateway-service
+cd api-gateway
 mvn spring-boot:run
 ```
 
@@ -203,7 +203,7 @@ Vérifications :
 Après avoir défini `OPENAI_API_KEY` :
 
 ```bash
-cd ebank-chatbot-service
+cd ai-assistant-service
 mvn spring-boot:run
 ```
 
@@ -230,7 +230,7 @@ HTTP statique. Elle cible par défaut `http://localhost:8083/chat/ask`.
 ### 5. Dashboard Angular
 
 ```bash
-cd ebank-dashboard
+cd banking-dashboard
 npm install
 npm start
 ```
@@ -243,21 +243,21 @@ les listes de comptes et de clients.
 Tests du contrôleur des comptes :
 
 ```bash
-cd ebank-service
+cd account-service
 mvn -Dtest=AccountControllerTest test
 ```
 
 Suite complète du service :
 
 ```bash
-cd ebank-service
+cd account-service
 mvn test
 ```
 
 Compilation du dashboard :
 
 ```bash
-cd ebank-dashboard
+cd banking-dashboard
 npm run build
 ```
 
