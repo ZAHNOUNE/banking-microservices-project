@@ -15,6 +15,10 @@ Le code se trouve dans [`banking-platform/`](./banking-platform/).
 - [Agent IA et MCP](./banking-platform/ai-assistant-service/)
 - [Interface Angular](./banking-platform/banking-dashboard/)
 
+## Documentation et schémas
+
+- [Architecture globale, diagramme de classes et diagrammes de séquence](./docs/ARCHITECTURE.md)
+
 ## Fonctionnalités
 
 - Gestion des clients, comptes et opérations bancaires de démonstration
