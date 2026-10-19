@@ -35,9 +35,9 @@ Les requêtes portant sur un compte inexistant répondent HTTP 404 pour les rout
 `getAccountById`, `getAccountsByCustomerId`, `getTransactionsByAccountId`, `deposit` et `withdraw` ; transport MCP HTTP via `/mcp`. Les montants sont vérifiés comme strictement positifs et finis. Un retrait échoue en cas de solde insuffisant.
 
 ## Tests
-- `AccountControllerTest` : 12 tests MockMvc/Mockito.
+- `AccountControllerTest` : 14 tests MockMvc/Mockito.
 - `AccountToolsTest` : 15 tests JUnit/Mockito.
-- Dans le workflow GitHub Actions contrôlé le 19 octobre 2026 : 27 tests exécutés, 0 échec, 0 erreur, 0 test ignoré.
+- Dans le workflow GitHub Actions contrôlé le 19 octobre 2026 : 44 tests exécutés, 0 échec, 0 erreur, 0 test ignoré.
 - Commande locale : `mvn test`.
 
 ## Configuration et lancement
