@@ -11,6 +11,8 @@ Service REST bancaire, gestion des comptes et historiques de transactions, serve
 - `CustomerDTO` et `AccountWithCustomerDTO` : représentation du client et vue enrichie.
 - `CustomerRestClient` : Feign vers `customer-service`.
 
+Les requêtes portant sur un compte inexistant répondent HTTP 404 pour les routes de lecture et de détail.
+
 ## Routes REST (port 8082)
 | Méthode | Chemin | Action |
 |---|---|---|

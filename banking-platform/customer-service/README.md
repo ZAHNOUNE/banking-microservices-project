@@ -9,6 +9,8 @@ Service REST et serveur d'outils MCP pour gérer les clients.
 - `CustomerTools` expose deux outils MCP : `getCustomerById`, `getAllCustomers`.
 - `CustomerServiceApplication` expose les outils et initialise trois clients de démonstration.
 
+Le nom et l'email d'un client sont obligatoires ; l'email doit respecter un format valide (HTTP 400 en cas de données invalides). Les recherches, mises à jour et suppressions de clients absents retournent HTTP 404.
+
 ## Routes (port 8081)
 | Méthode | Chemin | Résultat |
 |---|---|---|

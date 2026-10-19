@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/chat")
@@ -21,6 +23,9 @@ public class ChatController {
     // Endpoint de conversation consommé par la page HTML intégrée au dashboard Angular.
     @PostMapping("/ask")
     public ChatResponse ask(@RequestBody ChatRequest request) {
+        if (request == null || request.message() == null || request.message().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Message requis");
+        }
         String reply = chatClient.prompt()
                 .user(request.message())
                 .call()

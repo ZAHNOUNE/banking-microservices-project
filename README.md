@@ -17,6 +17,8 @@ Application pédagogique de gestion bancaire mettant en œuvre **Java 21**, **Sp
 ## Fonctionnalités
 
 ### Gestion des clients
+Les créations et mises à jour vérifient les champs obligatoires (nom et email) et le format de l'email. Les demandes de clients ou de comptes inexistants renvoient HTTP 404 ; les messages vides destinés au chatbot sont refusés avec HTTP 400.
+
 - Consulter, créer, modifier et supprimer les clients via une API REST.
 - Consulter un client par identifiant et lister les clients.
 - Exposer les outils MCP `getCustomerById` et `getAllCustomers`.

@@ -39,6 +39,12 @@ Dans des terminaux distincts :
 - `cd ai-assistant-service && mvn spring-boot:run` (clé OpenAI requise)
 - `cd banking-dashboard && npm ci && npm start`
 
+## Contrat de validation
+- Les informations de client sont validées par Bean Validation (nom et email non vides ; format email).
+- Les ressources absentes répondent 404 pour les routes clients et les lectures de comptes.
+- Les requêtes sans message sont rejetées avant l'appel au modèle conversationnel.
+- Ajouter les tests de non-régression dans les modules concernés avant publication.
+
 ## Validation et intégration continue
 - Quatre jobs Java du workflow `.github/workflows/verification.yml` exécutent `mvn -B -ntp test`.
 - Un job Angular effectue `npm ci` puis `npm run build`.

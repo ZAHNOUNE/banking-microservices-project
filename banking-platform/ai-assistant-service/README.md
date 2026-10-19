@@ -9,6 +9,8 @@ Service conversationnel HTTP utilisant Spring AI, OpenAI et deux serveurs MCP.
 4. Le modèle OpenAI configuré est `gpt-4o-mini`, température `0.3`.
 5. La réponse est rendue dans `ChatResponse.reply`.
 
+Les messages vides ou absents sont refusés avec HTTP 400 avant tout appel au modèle.
+
 ## Types et code
 - `ChatRequest(String message, String conversationId)` : requête entrante, le champ `conversationId` n'est pas actuellement exploité par le contrôleur.
 - `ChatResponse(String reply)` : résultat JSON.
