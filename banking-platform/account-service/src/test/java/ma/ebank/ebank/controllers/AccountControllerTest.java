@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,6 +56,19 @@ class AccountControllerTest {
                 bankingTransactionService
         );
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    }
+
+    @Test
+    void missingAccountIs404() throws Exception {
+        when(accountRepository.findById(42L)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/accounts/42")).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void missingAccountDetailsIs404() throws Exception {
+        when(accountRepository.findById(42L)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/accounts/42/details")).andExpect(status().isNotFound());
+        verifyNoInteractions(customerRestClient);
     }
 
     @Test
