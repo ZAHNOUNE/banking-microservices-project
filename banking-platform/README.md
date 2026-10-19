@@ -59,16 +59,18 @@ flowchart LR
 
 Les dossiers ont des noms orientés métier : `account-service`, `api-gateway`, `ai-assistant-service` et `banking-dashboard`. Les identifiants internes Spring et Consul restent inchangés afin de préserver la communication entre services.
 
+Les noms des dossiers ci-dessous sont descriptifs ; les identifiants Spring internes sont conservés pour la découverte Consul et le routage.
+
 ### Modules et ports
 
 | Composant | Port | Rôle |
 | --- | ---: | --- |
 | Consul | 8500 | registre de services et contrôles de santé |
 | `customer-service` | 8081 | clients, base H2, serveur MCP `/mcp` |
-| `account-service` | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
-| `ai-assistant-service` | 8083 | client MCP, `ChatClient` et OpenAI |
-| `api-gateway` | 8888 | routage `/api/**` vers les services |
-| `banking-dashboard` | 4200 | interface Angular de consultation |
+| `account-service` (service Spring `ebank-service`) | 8082 | comptes et transactions, Feign, serveur MCP `/mcp` |
+| `ai-assistant-service` (service Spring `ebank-chatbot-service`) | 8083 | client MCP, `ChatClient` et OpenAI |
+| `api-gateway` (service Spring `gateway-service`) | 8888 | routage `/api/**` vers les services |
+| `banking-dashboard` (projet Angular `ebank-dashboard`) | 4200 | interface Angular de consultation |
 
 ### Technologies
 
