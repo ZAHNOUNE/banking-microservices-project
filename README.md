@@ -158,9 +158,8 @@ Ces contrôles vérifient le code et le build ; ils ne constituent pas un test d
 - [Dashboard Angular](banking-platform/banking-dashboard/README.md)
 
 ## Limites techniques
-Application à vocation pédagogique, et non bancaire de production : authentification et autorisation absentes, soldes représentés en `double`, H2 volatil, logique transactionnelle REST/MCP dupliquée, outils financiers MCP accessibles sans politique de sécurité applicative. Le dashboard est en lecture seule, et le chatbot HTML n'est pas intégré au build Angular.
+Application à vocation pédagogique, et non bancaire de production : authentification et autorisation absentes, soldes représentés en `double`, H2 volatil, logique transactionnelle REST/MCP dupliquée, outils financiers MCP accessibles sans politique de sécurité applicative. Le dashboard est en lecture seule ; la page du chatbot HTML est accessible depuis le dashboard à l'adresse `/chatbot.html`.
 
 ## Références pédagogiques
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q)
 - [Tutoriel YouTube — Partie 2](https://www.youtube.com/watch?v=JHvxSZTWSsY)
-- [Référence de code et conditions de réutilisation](https://github.com/beks36/ebank-microservices-mcp) — attribution de la source consultée ; sa licence n'a pas été identifiée dans le dépôt.
