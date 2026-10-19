@@ -50,7 +50,7 @@ Dans des terminaux distincts :
 2. Maintenir compatibles les routes `/api/customers/**`, `/api/accounts/**`, `/api/chat/**` et les appels Angular.
 3. Vérifier les propriétés de Consul, les ports et les URLs des connexions MCP en cas de changement.
 4. Ne pas stocker de clé, `.env`, jeton, fichier `.key`, `.pem` ou mot de passe dans Git.
-5. Ne pas supprimer d'attribution ou de mention de licence éventuellement obligatoire.
+5. Respecter les licences applicables aux dépendances et bibliothèques utilisées.
 6. Ne pas présenter les flux bancaires comme prêts pour la production.
 
 ## Risques connus
