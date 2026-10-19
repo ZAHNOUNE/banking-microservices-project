@@ -6,14 +6,14 @@ Projet pédagogique d'architecture bancaire distribuée utilisant **Spring Boot*
 
 ## Accéder à l'application
 
-Le code se trouve dans [`banking-microservices-app/`](./banking-microservices-app/).
+Le code se trouve dans [`banking-platform/`](./banking-platform/).
 
-- [Documentation technique détaillée](./banking-microservices-app/README.md)
-- [Gestion des clients](./banking-microservices-app/customer-service/)
-- [Comptes et transactions](./banking-microservices-app/ebank-service/)
-- [API Gateway](./banking-microservices-app/gateway-service/)
-- [Agent IA et MCP](./banking-microservices-app/ebank-chatbot-service/)
-- [Interface Angular](./banking-microservices-app/ebank-dashboard/)
+- [Documentation technique détaillée](./banking-platform/README.md)
+- [Gestion des clients](./banking-platform/customer-service/)
+- [Comptes et transactions](./banking-platform/account-service/)
+- [API Gateway](./banking-platform/api-gateway/)
+- [Agent IA et MCP](./banking-platform/ai-assistant-service/)
+- [Interface Angular](./banking-platform/banking-dashboard/)
 
 ## Fonctionnalités
 
@@ -26,13 +26,13 @@ Le code se trouve dans [`banking-microservices-app/`](./banking-microservices-ap
 
 ## Démarrage rapide
 
-Depuis le dossier `banking-microservices-app`, lancer Consul :
+Depuis le dossier `banking-platform`, lancer Consul :
 
 ```powershell
 docker compose up -d
 ```
 
-Démarrer les modules Spring Boot dans des terminaux distincts avec `mvn spring-boot:run` depuis leurs dossiers respectifs. Le chatbot requiert une variable d'environnement `OPENAI_API_KEY`. Toutes les instructions et les ports sont détaillés dans la [documentation technique](./banking-microservices-app/README.md).
+Démarrer les modules Spring Boot dans des terminaux distincts avec `mvn spring-boot:run` depuis leurs dossiers respectifs. Le chatbot requiert une variable d'environnement `OPENAI_API_KEY`. Toutes les instructions et les ports sont détaillés dans la [documentation technique](./banking-platform/README.md).
 
 ## Références
 
