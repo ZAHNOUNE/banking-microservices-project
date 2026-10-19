@@ -158,7 +158,7 @@ Ces contrôles vérifient le code et le build ; ils ne constituent pas un test d
 - [Dashboard Angular](banking-platform/banking-dashboard/README.md)
 
 ## Limites techniques
-Application à vocation pédagogique, et non bancaire de production : authentification et autorisation absentes, soldes représentés en `double`, H2 volatil, logique transactionnelle REST/MCP dupliquée, outils financiers MCP accessibles sans politique de sécurité applicative. Le dashboard est en lecture seule ; la page du chatbot HTML est accessible depuis le dashboard à l'adresse `/chatbot.html`.
+Application à vocation pédagogique, et non bancaire de production : authentification et autorisation absentes, soldes représentés en `double`, H2 volatil, logique transactionnelle REST/MCP centralisée mais sans protection contre les accès concurrents, outils financiers MCP accessibles sans politique de sécurité applicative. Le dashboard est en lecture seule ; la page du chatbot HTML est accessible depuis le dashboard à l'adresse `/chatbot.html`.
 
 ## Références pédagogiques
 - [Tutoriel YouTube — Partie 1](https://www.youtube.com/watch?v=cdFz3VemT1Q)
