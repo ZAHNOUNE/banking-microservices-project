@@ -138,8 +138,9 @@ Dashboard : `http://localhost:4200`, Consul : `http://localhost:8500`, Gateway :
 Les contrôles sont définis dans [GitHub Actions](.github/workflows/verification.yml) et couvrent quatre modules Java ainsi que le build Angular.
 
 - `AccountControllerTest` : **12 tests**, couvrant les dépôts et retraits REST.
-- `AccountToolsTest` : **15 tests**, couvrant les opérations bancaires exposées via MCP.
-- Sur la dernière exécution CI contrôlée le 19 octobre 2026 : **27 tests bancaires réussis**, 0 échec, 0 erreur et 0 test ignoré.
+- `AccountToolsTest` : **15 tests**, couvrant la délégation des outils MCP.
+- `BankingTransactionServiceTest` : **15 tests**, couvrant les dépôts, retraits, montants invalides, erreurs métier et dépassements numériques.
+- Sur la dernière exécution CI contrôlée le 19 octobre 2026 : **42 tests bancaires réussis**, 0 échec, 0 erreur et 0 test ignoré.
 - La compilation de tous les modules Java et du dashboard Angular a réussi dans ce même workflow.
 
 Depuis `banking-platform/account-service` : `mvn test`. Depuis `banking-platform/banking-dashboard` : `npm run build`.
