@@ -37,6 +37,7 @@ Les requêtes portant sur un compte inexistant répondent HTTP 404 pour les rout
 ## Tests
 - `AccountControllerTest` : 14 tests MockMvc/Mockito.
 - `AccountToolsTest` : 15 tests JUnit/Mockito.
+- `BankingTransactionServiceTest` : 15 tests du service métier.
 - Dans le workflow GitHub Actions contrôlé le 19 octobre 2026 : 44 tests exécutés, 0 échec, 0 erreur, 0 test ignoré.
 - Commande locale : `mvn test`.
 
