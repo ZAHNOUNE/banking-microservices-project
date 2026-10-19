@@ -25,6 +25,10 @@ Service REST bancaire, gestion des comptes et historiques de transactions, serve
 
 À travers la Gateway, préfixer par `http://localhost:8888/api`.
 
+## Service métier transactionnel
+
+`BankingTransactionService` centralise les dépôts et retraits utilisés par les API REST et les outils MCP. Les opérations exécutent la mise à jour du solde et l'enregistrement de la transaction dans une transaction Spring `@Transactional`. Les erreurs comprennent : montant invalide (HTTP 400), compte absent (404) et solde insuffisant (409). Cette implémentation reste pédagogique : montants en `double`, H2 en mémoire, absence d'authentification et de protection métier contre les accès concurrents.
+
 ## Outils MCP
 `getAccountById`, `getAccountsByCustomerId`, `getTransactionsByAccountId`, `deposit` et `withdraw` ; transport MCP HTTP via `/mcp`. Les montants sont vérifiés comme strictement positifs et finis. Un retrait échoue en cas de solde insuffisant.
 

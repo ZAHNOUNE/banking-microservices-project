@@ -5,17 +5,15 @@ import ma.ebank.ebank.dto.AccountWithCustomerDTO;
 import ma.ebank.ebank.dto.CustomerDTO;
 import ma.ebank.ebank.entities.Account;
 import ma.ebank.ebank.entities.Transaction;
-import ma.ebank.ebank.entities.TransactionType;
 import ma.ebank.ebank.feign.CustomerRestClient;
 import ma.ebank.ebank.repositories.AccountRepository;
 import ma.ebank.ebank.repositories.TransactionRepository;
+import ma.ebank.ebank.services.BankingTransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accounts")
@@ -26,6 +24,7 @@ public class AccountController {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final CustomerRestClient customerRestClient;
+    private final BankingTransactionService bankingTransactionService;
 
     @GetMapping
     public List<Account> getAllAccounts() {
@@ -69,46 +68,11 @@ public class AccountController {
 
     @PostMapping("/{id}/depot")
     public Transaction deposit(@PathVariable Long id, @RequestParam double amount) {
-        validateAmount(amount);
-        return performTransaction(id, amount, TransactionType.DEPOT);
+        return bankingTransactionService.deposit(id, amount);
     }
 
     @PostMapping("/{id}/retrait")
     public Transaction withdraw(@PathVariable Long id, @RequestParam double amount) {
-        validateAmount(amount);
-        Account account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Account not found with id " + id));
-        if (account.getBalance() < amount) {
-            throw new RuntimeException("Solde insuffisant");
-        }
-        return performTransaction(id, amount, TransactionType.RETRAIT);
-    }
-
-    private void validateAmount(double amount) {
-        if (!Double.isFinite(amount) || amount <= 0) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Le montant doit être strictement positif et fini"
-            );
-        }
-    }
-
-    private Transaction performTransaction(Long accountId, double amount, TransactionType type) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found with id " + accountId));
-
-        double newBalance = type == TransactionType.DEPOT
-                ? account.getBalance() + amount
-                : account.getBalance() - amount;
-        account.setBalance(newBalance);
-        accountRepository.save(account);
-
-        Transaction transaction = Transaction.builder()
-                .amount(amount)
-                .date(new Date())
-                .type(type)
-                .account(account)
-                .build();
-        return transactionRepository.save(transaction);
+        return bankingTransactionService.withdraw(id, amount);
     }
 }

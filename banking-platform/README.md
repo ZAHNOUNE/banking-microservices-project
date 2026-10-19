@@ -290,9 +290,8 @@ Les classes `AccountControllerTest` et `AccountToolsTest` utilisent JUnit 5 et M
   transactions n'est implémentée ;
 - les erreurs « ressource absente » et « solde insuffisant » utilisent encore des
   exceptions génériques ;
-- les outils MCP `deposit` et `withdraw` ont leur propre implémentation ;
-  ils disposent maintenant d'une validation de montant indépendante, mais l'extraction
-  d'une couche métier commune et transactionnelle reste à réaliser ;
+- les opérations REST et MCP utilisent une couche métier commune `BankingTransactionService`,
+  transactionnelle ; la concurrence et le stockage monétaire en `double` demeurent des limites ;
 - le dashboard ne propose que la consultation, sans formulaires CRUD ni opérations ;
 - `chatbot.html` est disponible comme ressource statique Angular dans `banking-dashboard/public/` ;
 - aucun bot Telegram n'est présent dans ce dépôt ;

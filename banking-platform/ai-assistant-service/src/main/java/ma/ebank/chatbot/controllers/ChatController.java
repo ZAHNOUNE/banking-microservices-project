@@ -18,7 +18,7 @@ public class ChatController {
 
     private final ChatClient chatClient;
 
-    // Endpoint unique consommé à la fois par le dashboard Angular et par le bot Telegram.
+    // Endpoint de conversation consommé par la page HTML intégrée au dashboard Angular.
     @PostMapping("/ask")
     public ChatResponse ask(@RequestBody ChatRequest request) {
         String reply = chatClient.prompt()

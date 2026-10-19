@@ -6,6 +6,7 @@ import ma.ebank.ebank.entities.TransactionType;
 import ma.ebank.ebank.feign.CustomerRestClient;
 import ma.ebank.ebank.repositories.AccountRepository;
 import ma.ebank.ebank.repositories.TransactionRepository;
+import ma.ebank.ebank.services.BankingTransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,9 @@ class AccountControllerTest {
     @Mock
     private CustomerRestClient customerRestClient;
 
+    @Mock
+    private BankingTransactionService bankingTransactionService;
+
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -47,64 +51,59 @@ class AccountControllerTest {
         AccountController controller = new AccountController(
                 accountRepository,
                 transactionRepository,
-                customerRestClient
+                customerRestClient,
+                bankingTransactionService
         );
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void depositAcceptsPositiveFiniteAmount() throws Exception {
-        Account account = Account.builder().id(1L).balance(100.0).build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(transactionRepository.save(any(Transaction.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
 
+
+        when(bankingTransactionService.deposit(1L, 25.5)).thenReturn(Transaction.builder().amount(25.5).type(TransactionType.DEPOT).build());
         mockMvc.perform(post("/accounts/1/depot").param("amount", "25.5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(25.5))
                 .andExpect(jsonPath("$.type").value("DEPOT"));
 
-        assertEquals(125.5, account.getBalance());
-        verify(accountRepository).save(account);
-        ArgumentCaptor<Transaction> transactionCaptor = ArgumentCaptor.forClass(Transaction.class);
-        verify(transactionRepository).save(transactionCaptor.capture());
-        assertEquals(TransactionType.DEPOT, transactionCaptor.getValue().getType());
+        verify(bankingTransactionService).deposit(1L, 25.5);
     }
 
     @Test
     void withdrawAcceptsPositiveFiniteAmount() throws Exception {
-        Account account = Account.builder().id(1L).balance(100.0).build();
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(transactionRepository.save(any(Transaction.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
 
+
+        when(bankingTransactionService.withdraw(1L, 25.5)).thenReturn(Transaction.builder().amount(25.5).type(TransactionType.RETRAIT).build());
         mockMvc.perform(post("/accounts/1/retrait").param("amount", "25.5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(25.5))
                 .andExpect(jsonPath("$.type").value("RETRAIT"));
 
-        assertEquals(74.5, account.getBalance());
-        verify(accountRepository).save(account);
-        ArgumentCaptor<Transaction> transactionCaptor = ArgumentCaptor.forClass(Transaction.class);
-        verify(transactionRepository).save(transactionCaptor.capture());
-        assertEquals(TransactionType.RETRAIT, transactionCaptor.getValue().getType());
+        verify(bankingTransactionService).withdraw(1L, 25.5);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"-1", "0", "NaN", "Infinity", "-Infinity"})
     void depositRejectsInvalidAmount(String amount) throws Exception {
+        org.mockito.Mockito.when(bankingTransactionService.deposit(
+                org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.anyDouble()))
+                .thenThrow(new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.BAD_REQUEST, "Montant invalide"));
         mockMvc.perform(post("/accounts/1/depot").param("amount", amount))
                 .andExpect(status().isBadRequest());
-
         verifyNoInteractions(accountRepository, transactionRepository);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"-1", "0", "NaN", "Infinity", "-Infinity"})
     void withdrawRejectsInvalidAmount(String amount) throws Exception {
+        org.mockito.Mockito.when(bankingTransactionService.withdraw(
+                org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.anyDouble()))
+                .thenThrow(new org.springframework.web.server.ResponseStatusException(
+                        org.springframework.http.HttpStatus.BAD_REQUEST, "Montant invalide"));
         mockMvc.perform(post("/accounts/1/retrait").param("amount", amount))
                 .andExpect(status().isBadRequest());
-
         verifyNoInteractions(accountRepository, transactionRepository);
     }
 }

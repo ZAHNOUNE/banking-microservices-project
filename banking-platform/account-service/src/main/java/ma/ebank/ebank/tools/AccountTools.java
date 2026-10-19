@@ -3,13 +3,12 @@ package ma.ebank.ebank.tools;
 import lombok.AllArgsConstructor;
 import ma.ebank.ebank.entities.Account;
 import ma.ebank.ebank.entities.Transaction;
-import ma.ebank.ebank.entities.TransactionType;
 import ma.ebank.ebank.repositories.AccountRepository;
 import ma.ebank.ebank.repositories.TransactionRepository;
+import ma.ebank.ebank.services.BankingTransactionService;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 // Outils exposés en MCP : l'agent IA (ebank-chatbot-service) peut les
@@ -20,6 +19,7 @@ public class AccountTools {
 
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final BankingTransactionService bankingTransactionService;
 
     @Tool(description = "Récupère les informations d'un compte bancaire (solde, RIB) à partir de son identifiant")
     public Account getAccountById(Long accountId) {
@@ -37,46 +37,13 @@ public class AccountTools {
         return transactionRepository.findByAccountId(accountId);
     }
 
-    private void validateAmount(double amount) {
-        if (!Double.isFinite(amount) || amount <= 0) {
-            throw new IllegalArgumentException("Le montant doit être strictement positif et fini");
-        }
-    }
-
     @Tool(description = "Effectue un dépôt d'argent sur un compte bancaire et retourne la transaction créée")
     public Transaction deposit(Long accountId, double amount) {
-        validateAmount(amount);
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Compte introuvable avec l'id " + accountId));
-        account.setBalance(account.getBalance() + amount);
-        accountRepository.save(account);
-
-        Transaction transaction = Transaction.builder()
-                .amount(amount)
-                .date(new Date())
-                .type(TransactionType.DEPOT)
-                .account(account)
-                .build();
-        return transactionRepository.save(transaction);
+        return bankingTransactionService.deposit(accountId, amount);
     }
 
-    @Tool(description = "Effectue un retrait d'argent sur un compte bancaire (échoue si le solde est insuffisant) et retourne la transaction créée")
+    @Tool(description = "Effectue un retrait d'argent sur un compte bancaire et retourne la transaction créée")
     public Transaction withdraw(Long accountId, double amount) {
-        validateAmount(amount);
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Compte introuvable avec l'id " + accountId));
-        if (account.getBalance() < amount) {
-            throw new RuntimeException("Solde insuffisant pour effectuer ce retrait");
-        }
-        account.setBalance(account.getBalance() - amount);
-        accountRepository.save(account);
-
-        Transaction transaction = Transaction.builder()
-                .amount(amount)
-                .date(new Date())
-                .type(TransactionType.RETRAIT)
-                .account(account)
-                .build();
-        return transactionRepository.save(transaction);
+        return bankingTransactionService.withdraw(accountId, amount);
     }
 }
